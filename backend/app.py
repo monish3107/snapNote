@@ -5,19 +5,24 @@ from flask_cors import CORS
 import firebase_admin
 from firebase_admin import auth, firestore, credentials
 import json
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
+# Get credentials path from environment variables
+firebase_creds_path = os.getenv('FIREBASE_ADMIN_CREDENTIALS')
+vision_api_creds_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+
 # Initialize Firebase Admin SDK
-cred = credentials.Certificate("C:/Users/parul/OneDrive/Desktop/snapNote/backend/firebase-admin-sdk.json")
+cred = credentials.Certificate(firebase_creds_path)
 firebase_admin.initialize_app(cred)
 
 # Get Firestore database
 db = firestore.client()
-
-# Default Google Vision API credentials path
-DEFAULT_CREDENTIALS_PATH = "C:/Users/parul/OneDrive/Desktop/snapNote/backend/snapnote-vision-key.json"
 
 # Free usage limit
 FREE_USAGE_LIMIT = 5
@@ -170,6 +175,9 @@ def extract_text():
                 with open(temp_key_path, 'w') as f:
                     json.dump(json.loads(custom_api_key), f)
 
+                # Store original credentials to restore later
+                original_credentials = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+                
                 # Use the temporary credentials file
                 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = temp_key_path
                 client = vision.ImageAnnotatorClient()
@@ -183,6 +191,12 @@ def extract_text():
 
                 # Clean up temporary file
                 os.remove(temp_key_path)
+                
+                # Restore original credentials
+                if original_credentials:
+                    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = original_credentials
+                else:
+                    os.environ.pop("GOOGLE_APPLICATION_CREDENTIALS", None)
 
                 if response.text_annotations:
                     extracted_text = response.text_annotations[0].description
@@ -197,7 +211,6 @@ def extract_text():
                 return jsonify({'error': f'Error with custom API key: {str(e)}'}), 400
         elif api_usage_count < FREE_USAGE_LIMIT:
             # Use default API key for free usage
-            os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = DEFAULT_CREDENTIALS_PATH
             client = vision.ImageAnnotatorClient()
 
             # Process the image
