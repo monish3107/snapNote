@@ -24,7 +24,7 @@ function App() {
   const [text, setText] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
-  const [error, setError] = useState<string>('');
+  const [, setError] = useState<string>('');
   const [copied, setCopied] = useState<boolean>(false);
   const [usageStats, setUsageStats] = useState<UsageStats | null>(null);
 
@@ -40,6 +40,7 @@ function App() {
         setUser(null);
         setToken(null);
         setUsageStats(null);
+        setError('');
       }
     });
     return () => unsubscribe();
@@ -53,8 +54,8 @@ function App() {
       });
       setUsageStats(response.data);
     } catch (err) {
-      console.error('Failed to fetch usage stats:', err);
-    }
+      setError('Failed to fetch usage stats');
+      console.error(err);}
   };
 
   // File Handling
