@@ -23,16 +23,16 @@ const WelcomeSection = ({ handleGoogleLogin }: { handleGoogleLogin: () => void }
     return () => clearInterval(interval);
   }, []);
 
-  // Handle Image Preview
-  const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result as string);
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    }
-  };
+  // // Handle Image Preview
+  // const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files[0]) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setPreviewImage(reader.result as string);
+  //     };
+  //     reader.readAsDataURL(e.target.files[0]);
+  //   }
+  // };
 
   return (
     <div className="flex flex-col items-center justify-center bg-gray-100 p-10 rounded-xl shadow-lg max-w-md mx-auto text-center">
