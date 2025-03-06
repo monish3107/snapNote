@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const WelcomeSection = ({ handleGoogleLogin }: { handleGoogleLogin: () => void }) => {
   const [tipIndex, setTipIndex] = useState(0);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  // const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   // Rotating Tips
   const tips = [
