@@ -1,0 +1,22 @@
+# Root .gitignore
+
+# Sensitive files
+backend/firebase-admin-sdk.json
+backend/snapnote-vision-key.json
+**/firebase-admin-sdk.json
+**/snapnote-vision-key.json
+
+# Environment files
+**/.env
+
+# Python specific
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+**/instance/
+**/.pytest_cache/
+
+# Editor and OS files
+.DS_Store
+.idea/
+.vscode/
