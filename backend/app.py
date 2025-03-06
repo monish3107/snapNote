@@ -13,17 +13,24 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-# Get credentials path from environment variables
-firebase_creds_path = os.getenv('FIREBASE_ADMIN_CREDENTIALS')
-vision_api_creds_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+# Load Firebase credentials from environment variable
+firebase_creds_json = os.getenv('FIREBASE_ADMIN_CREDENTIALS')
+if firebase_creds_json:
+    cred = credentials.Certificate(json.loads(firebase_creds_json))
+    firebase_admin.initialize_app(cred)
+else:
+    raise ValueError("Firebase Admin credentials not found in environment variables.")
 
-# Initialize Firebase Admin SDK
-cred = credentials.Certificate(firebase_creds_path)
-firebase_admin.initialize_app(cred)
+# Load Google Vision API credentials from environment variable
+google_creds_json = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+if google_creds_json:
+    # Set the environment variable for Google Vision
+    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = google_creds_json
+else:
+    raise ValueError("Google Vision API credentials not found in environment variables.")
 
 # Get Firestore database
 db = firestore.client()
-
 # Free usage limit
 FREE_USAGE_LIMIT = 5
 
