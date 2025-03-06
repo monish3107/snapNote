@@ -14,8 +14,11 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 # Get credentials path from environment variables
-firebase_creds_path = os.getenv('FIREBASE_ADMIN_CREDENTIALS')
-vision_api_creds_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+firebase_creds_path = "/opt/render/project/src/backend/firebase-admin-sdk.json"
+if os.path.exists(firebase_creds_path):
+    cred = credentials.Certificate(firebase_creds_path)
+else:
+    raise FileNotFoundError(f"Firebase credentials not found at {firebase_creds_path}")vision_api_creds_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
 
 # Initialize Firebase Admin SDK
 cred = credentials.Certificate(firebase_creds_path)
