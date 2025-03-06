@@ -2,13 +2,13 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBQM_svd32loZldi8ucGpBzOP4iESc8bOU",
-  authDomain: "snapnote-9386c.firebaseapp.com",
-  projectId: "snapnote-9386c",
-  storageBucket: "snapnote-9386c.firebasestorage.app",
-  messagingSenderId: "913194201307",
-  appId: "1:913194201307:web:ddceaa282f56643ed7dcfe",
-  measurementId: "G-1GMX03NN4K"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);
